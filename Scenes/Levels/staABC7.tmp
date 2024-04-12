@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5legd3mv1rkb"]
+
+[ext_resource type="Script" path="res://Scenes/Levels/station_level.gd" id="1_djug3"]
+[ext_resource type="PackedScene" uid="uid://86kfsctt0116" path="res://Scenes/Actors/station.tscn" id="1_jre65"]
+[ext_resource type="Texture2D" uid="uid://hh3n4roig3fi" path="res://Graphics/background.bmp" id="2_bnxyq"]
+
+[node name="Station_level" type="Node2D"]
+script = ExtResource("1_djug3")
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.247059, 0.247059, 0.247059, 1)
+position = Vector2(574, 322)
+scale = Vector2(9.29032, 5.0625)
+texture = ExtResource("2_bnxyq")
+
+[node name="Stations" type="Node2D" parent="."]
+
+[node name="Station1" parent="Stations" instance=ExtResource("1_jre65")]
+position = Vector2(549, 476)
+team = 2
+my_name = "Two"
+
+[node name="Station2" parent="Stations" instance=ExtResource("1_jre65")]
+position = Vector2(245, 206)
+team = 1
+my_name = "One"
+
+[node name="Connectors" type="Node2D" parent="."]

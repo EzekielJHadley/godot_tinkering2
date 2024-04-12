@@ -1,0 +1,35 @@
+for station ideas
+
+each station will generate "units" per second
+with a max number of units
+these both can be upgraded by spending units
+
+clicking on the station will start the connection between it and another station
+drad and collide with another staion to set the connection
+click on the connector again to disconnect it
+each station will send out a signal that it will start to transfer to the connected node
+if both nodes try to connect to eachother the connector will manage the "contest"
+to detect if there is already a connector there, check all the existing ones
+	there will only be 10's of them and not 1,000's of them
+
+Contested connectors
+	it will acrue units from one of the stations and wait until the other station sends units
+	the difference goes to the losing station
+	visually the connector will be gray until the first station sends in units, then i will show it is half filled
+	if the first station fires off again then it will show 3/4's filled (etc)
+	once the contest is over the connection will turn the station's team color and a light will travel twords the loser
+		so if station A sends 5 units ever 1 second and goes first the connector will wait for station B
+		when station B sends 4 units after its 1 second delay 
+		the connecto will determine station B lost and transfers 1 unit to station B
+		
+		if station A sends 3 units every 1/2 second
+		and station B sends 7 units every 1 second
+		then the connector will contain 6 A units after 1 second, and 7 B units
+		resulting in B winning the contest and sending 1 units to A
+	
+	(we could also make the connector always display the last contest winner:
+		have it be 3/4s the winner color and fade into the losers color)
+		
+(we could also skip the whole contest idea and just have it transfer units both ways, but this might be more visually interesting)
+a the benefit of teh contest is that it visiually shows who is sending more units over all
+

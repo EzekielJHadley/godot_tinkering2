@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ibtdtgwelu14"]
+
+[ext_resource type="Texture2D" uid="uid://cm0qbbr3f70pm" path="res://Graphics/pattern.bmp" id="1_256ad"]
+[ext_resource type="Script" path="res://Scenes/Actors/connector.gd" id="2_fftfh"]
+
+[node name="Connector" type="Polygon2D"]
+texture_repeat = 2
+texture = ExtResource("1_256ad")
+polygon = PackedVector2Array(0, -32, 512, -32, 512, 32, 0, 32)
+uv = PackedVector2Array(0, 20, 512, 20, 512, 84, 0, 84)
+script = ExtResource("2_fftfh")

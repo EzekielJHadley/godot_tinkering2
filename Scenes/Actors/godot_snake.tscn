@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://byenxoep3d63x"]
+
+[ext_resource type="Texture2D" uid="uid://dxx8wyfx6ie4e" path="res://icon.svg" id="1_qq262"]
+[ext_resource type="Script" path="res://Scenes/Actors/godot_snake.gd" id="1_xctwn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f52fl"]
+size = Vector2(128, 126)
+
+[sub_resource type="SkeletonModification2DTwoBoneIK" id="SkeletonModification2DTwoBoneIK_tp8sf"]
+resource_local_to_scene = true
+target_nodepath = NodePath("../Path2D/PathFollow2D")
+joint_one_bone_idx = 1
+joint_one_bone2d_node = NodePath("FirstBone/SecondBone")
+joint_two_bone_idx = 2
+joint_two_bone2d_node = NodePath("FirstBone/SecondBone/ThirdBone")
+
+[sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_132ud"]
+resource_local_to_scene = true
+enabled = true
+modification_count = 1
+modifications/0 = SubResource("SkeletonModification2DTwoBoneIK_tp8sf")
+
+[sub_resource type="Curve2D" id="Curve2D_8foh0"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 195, -280, 0, 0, 0, 0, 208, -114, 0, 0, 0, 0, 446, -31, 0, 0, 0, 0, 265, 96, 0, 0, 0, 0, 194, 243, 0, 0, 0, 0, 17, 86, 0, 0, 0, 0, -272, 135, 0, 0, 0, 0, -105, -41, 0, 0, 0, 0, -155, -242, 0, 0, 0, 0, 49, -162, 0, 0, 0, 0, 195, -280)
+}
+point_count = 11
+
+[node name="Godot_Snake" type="CharacterBody2D"]
+script = ExtResource("1_xctwn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_f52fl")
+
+[node name="Skeleton2D" type="Skeleton2D" parent="."]
+modification_stack = SubResource("SkeletonModificationStack2D_132ud")
+
+[node name="FirstBone" type="Bone2D" parent="Skeleton2D"]
+rest = Transform2D(1, 0, 0, 1, 0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Skeleton2D/FirstBone"]
+texture = ExtResource("1_qq262")
+
+[node name="SecondBone" type="Bone2D" parent="Skeleton2D/FirstBone"]
+position = Vector2(59, 1)
+rest = Transform2D(1, 0, 0, 1, 59, 1)
+metadata/_local_pose_override_enabled_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Skeleton2D/FirstBone/SecondBone"]
+position = Vector2(68, -3)
+texture = ExtResource("1_qq262")
+
+[node name="ThirdBone" type="Bone2D" parent="Skeleton2D/FirstBone/SecondBone"]
+position = Vector2(132, -1)
+rest = Transform2D(1, 0, 0, 1, 132, -1)
+auto_calculate_length_and_angle = false
+length = 128.0
+bone_angle = 0.0
+metadata/_local_pose_override_enabled_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Skeleton2D/FirstBone/SecondBone/ThirdBone"]
+position = Vector2(64.0293, -2.75551)
+texture = ExtResource("1_qq262")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_8foh0")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(195, -280)
+rotation = 1.49264

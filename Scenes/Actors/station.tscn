@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://86kfsctt0116"]
+
+[ext_resource type="Texture2D" uid="uid://14jypwqrvemd" path="res://Graphics/station_background.png" id="1_4dkww"]
+[ext_resource type="Script" path="res://Scenes/Actors/station.gd" id="1_kkaoj"]
+[ext_resource type="Texture2D" uid="uid://c4kn1pgtm036n" path="res://Graphics/station.png" id="2_hjfc0"]
+[ext_resource type="PackedScene" uid="uid://cscrq51ksakk" path="res://Scenes/Actors/connection_tester.tscn" id="4_im31i"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hgosc"]
+radius = 64.195
+
+[node name="Station" type="StaticBody2D"]
+collision_mask = 7
+input_pickable = true
+script = ExtResource("1_kkaoj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hgosc")
+
+[node name="TeamColor" type="TextureRect" parent="."]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 0
+texture = ExtResource("1_4dkww")
+
+[node name="StationTop" type="Sprite2D" parent="."]
+texture = ExtResource("2_hjfc0")
+
+[node name="UnitsLabel" type="Label" parent="StationTop"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.0
+offset_top = -75.5
+offset_right = -44.0
+offset_bottom = -52.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "00000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="TransferTimer" type="Timer" parent="Timers"]
+
+[node name="AccrueUnitsTimer" type="Timer" parent="Timers"]
+
+[node name="connection_tester" parent="." instance=ExtResource("4_im31i")]
+
+[connection signal="gui_input" from="TeamColor" to="." method="_on_team_color_gui_input"]
+[connection signal="timeout" from="Timers/TransferTimer" to="." method="_on_transfer_timer_timeout"]
+[connection signal="timeout" from="Timers/AccrueUnitsTimer" to="." method="_on_accrue_units_timer_timeout"]

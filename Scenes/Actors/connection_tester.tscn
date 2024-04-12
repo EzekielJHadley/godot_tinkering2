@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cscrq51ksakk"]
+
+[ext_resource type="Script" path="res://Scenes/Actors/connection_tester.gd" id="1_76qfj"]
+
+[node name="connection_tester" type="Node2D"]
+script = ExtResource("1_76qfj")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(100, 0)
+collision_mask = 5
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+position = Vector2(0, 32)
+target_position = Vector2(100, 0)
+collision_mask = 5

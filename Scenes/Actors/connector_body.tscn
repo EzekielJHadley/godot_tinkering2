@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3 uid="uid://dh8oeausc1w45"]
+
+[ext_resource type="Texture2D" uid="uid://cm0qbbr3f70pm" path="res://Graphics/pattern.bmp" id="1_72laf"]
+[ext_resource type="Shader" path="res://Scenes/Actors/connector_body.gdshader" id="1_c8ljj"]
+[ext_resource type="Script" path="res://Scenes/Actors/connector_body.gd" id="1_tag2x"]
+[ext_resource type="Texture2D" uid="uid://br3rlwrvr0lu3" path="res://Graphics/circle.png" id="4_fhdda"]
+[ext_resource type="Texture2D" uid="uid://wr4o4fhibwf6" path="res://Graphics/puff/PNG/White puff/whitePuff18.png" id="5_r47fi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6gfr"]
+resource_local_to_scene = true
+shader = ExtResource("1_c8ljj")
+shader_parameter/team_color = Color(1, 0, 0, 1)
+shader_parameter/contested_color = Color(0, 0, 1, 1)
+shader_parameter/percent_fill = 0.5
+shader_parameter/conn_length = 512.0
+
+[sub_resource type="Curve2D" id="Curve2D_qu3je"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 512, 0)
+}
+point_count = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hui74"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 40.0
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(-1, 0, 0)
+spread = 60.0
+initial_velocity_min = 132.58
+initial_velocity_max = 132.58
+gravity = Vector3(0, 0, 0)
+scale_min = 0.05
+scale_max = 0.1
+
+[node name="Connector_body" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+input_pickable = true
+script = ExtResource("1_tag2x")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -32, 512, -32, 512, 32, 0, 32)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_o6gfr")
+texture = ExtResource("1_72laf")
+polygon = PackedVector2Array(0, -32, 512, -32, 512, 32, 0, 32)
+uv = PackedVector2Array(0, 20, 512, 20, 512, 84, 0, 84)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_qu3je")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+
+[node name="PointLight2D" type="PointLight2D" parent="Path2D/PathFollow2D"]
+visible = false
+color = Color(1, 0, 0, 1)
+energy = 7.96
+shadow_enabled = true
+texture = ExtResource("4_fhdda")
+texture_scale = 0.25
+
+[node name="ParticleOffset" type="Node2D" parent="."]
+position = Vector2(512, 0)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ParticleOffset"]
+position = Vector2(-68, 0)
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_hui74")
+texture = ExtResource("5_r47fi")
+lifetime = 0.4
+one_shot = true
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://dungglyfa3fs6"]
+
+[ext_resource type="Script" path="res://Scenes/Levels/hud.gd" id="1_wderd"]
+
+[node name="HUD" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_wderd")
+
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -50.5
+offset_right = 48.0
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="Label" type="Label" parent="Menu/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Level ###"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Restart" type="Button" parent="Menu/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Restart
+"
+
+[node name="MainMenu" type="Button" parent="Menu/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu
+"
+
+[node name="NextLevel" type="Button" parent="Menu/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Next Level
+"
+
+[node name="MenuButton" type="Button" parent="."]
+offset_left = 47.0
+offset_top = 41.0
+offset_right = 100.0
+offset_bottom = 72.0
+text = "Menu
+"
+
+[connection signal="pressed" from="Menu/VBoxContainer2/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer2/VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="MenuButton" to="." method="_on_menu_button_pressed"]

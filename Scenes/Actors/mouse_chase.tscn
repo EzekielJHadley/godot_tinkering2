@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dftybt1httv5e"]
+
+[ext_resource type="Script" path="res://Scenes/Actors/mouse_chase.gd" id="1_gv081"]
+[ext_resource type="Texture2D" uid="uid://dxx8wyfx6ie4e" path="res://icon.svg" id="1_osf0m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ph2ju"]
+size = Vector2(128, 126)
+
+[node name="MouseChase" type="CharacterBody2D"]
+script = ExtResource("1_gv081")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_osf0m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ph2ju")

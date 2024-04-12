@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5legd3mv1rkb"]
+
+[ext_resource type="Script" path="res://Scenes/Levels/station_level.gd" id="1_djug3"]
+[ext_resource type="PackedScene" uid="uid://86kfsctt0116" path="res://Scenes/Actors/station.tscn" id="1_jre65"]
+[ext_resource type="Texture2D" uid="uid://hh3n4roig3fi" path="res://Graphics/background.bmp" id="2_bnxyq"]
+[ext_resource type="PackedScene" uid="uid://cvxe505lasdk1" path="res://Scenes/Actors/wall.tscn" id="4_6g7d8"]
+[ext_resource type="PackedScene" uid="uid://dungglyfa3fs6" path="res://Scenes/Levels/hud.tscn" id="4_e3rnv"]
+
+[node name="Station_level" type="Node2D"]
+script = ExtResource("1_djug3")
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.247059, 0.247059, 0.247059, 1)
+position = Vector2(574, 322)
+scale = Vector2(9.29032, 5.0625)
+texture = ExtResource("2_bnxyq")
+
+[node name="Connectors" type="Node2D" parent="."]
+
+[node name="Stations" type="Node2D" parent="."]
+
+[node name="Station1" parent="Stations" instance=ExtResource("1_jre65")]
+position = Vector2(266, 534)
+team = 2
+start = true
+my_name = "Two"
+
+[node name="Station2" parent="Stations" instance=ExtResource("1_jre65")]
+position = Vector2(569, 204)
+team = 1
+start = true
+my_name = "One"
+level = 2
+
+[node name="Station3" parent="Stations" instance=ExtResource("1_jre65")]
+position = Vector2(226, 198)
+my_name = "Three"
+starting_units = 10
+
+[node name="Station4" parent="Stations" instance=ExtResource("1_jre65")]
+position = Vector2(972, 198)
+my_name = "Three"
+starting_units = 10
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="Wall" parent="Walls" instance=ExtResource("4_6g7d8")]
+position = Vector2(893, 369)
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="COMP1Attack" type="Timer" parent="Timers"]
+
+[node name="COMP2Attack" type="Timer" parent="Timers"]
+
+[node name="HUD" parent="." instance=ExtResource("4_e3rnv")]

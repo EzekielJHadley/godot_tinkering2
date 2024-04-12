@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxyfrfoww6fa1"]
+
+[ext_resource type="PackedScene" uid="uid://vumvjq6d7h7x" path="res://Scenes/Actors/spider_godot.tscn" id="1_iwe6u"]
+
+[node name="Dancing_Godot" type="Node2D"]
+
+[node name="SpiderGodot" parent="." instance=ExtResource("1_iwe6u")]
+position = Vector2(332, 318)
+scale = Vector2(0.5, 0.5)
+
+[node name="SpiderGodot2" parent="." instance=ExtResource("1_iwe6u")]
+position = Vector2(808, 308)
+scale = Vector2(0.5, 0.5)
+move_style = 1

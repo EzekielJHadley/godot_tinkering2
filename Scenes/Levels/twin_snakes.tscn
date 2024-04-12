@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy1wjuni2k3rt"]
+
+[ext_resource type="PackedScene" uid="uid://byenxoep3d63x" path="res://Scenes/Actors/godot_snake.tscn" id="1_t6ei0"]
+
+[node name="Twin_Snakes" type="Node2D"]
+
+[node name="Godot_Snake" parent="." instance=ExtResource("1_t6ei0")]
+position = Vector2(184, 227)
+scale = Vector2(0.5, 0.5)
+
+[node name="Godot_Snake2" parent="." instance=ExtResource("1_t6ei0")]
+position = Vector2(695, 341)
+scale = Vector2(0.5, 0.5)
