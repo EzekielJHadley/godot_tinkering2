@@ -15,6 +15,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Menu"]
 layout_mode = 1
@@ -34,6 +35,7 @@ alignment = 1
 
 [node name="Label" type="Label" parent="Menu/VBoxContainer2"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_font_sizes/font_size = 50
 text = "Level ###"
 horizontal_alignment = 1

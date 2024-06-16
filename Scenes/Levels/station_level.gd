@@ -18,6 +18,11 @@ func _ready():
 	print("all station listeners set.")
 
 	AI = comp_ai.new(all_stations)
+	#need the ray casts to happen on a phycisc frame
+	#first fram doesn't like to work :(
+	#TODO: make them run in parallel
+	await Engine.get_main_loop().physics_frame
+	await AI.build_graph()
 	AI.connect_computer_signals(ai_connection)
 	
 func station_conquered(station, former_team):
@@ -80,6 +85,8 @@ func validate_connection(new_connector):
 				print("Contested connection")
 				new_connector.queue_free()
 				connector.set_contested()
+				
+	
 
 func ai_connection(from_station, to_station):
 	#check if teh connection already exists

@@ -1,12 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://86kfsctt0116"]
+[gd_scene load_steps=8 format=3 uid="uid://86kfsctt0116"]
 
 [ext_resource type="Texture2D" uid="uid://14jypwqrvemd" path="res://Graphics/station_background.png" id="1_4dkww"]
 [ext_resource type="Script" path="res://Scenes/Actors/station.gd" id="1_kkaoj"]
 [ext_resource type="Texture2D" uid="uid://c4kn1pgtm036n" path="res://Graphics/station.png" id="2_hjfc0"]
 [ext_resource type="PackedScene" uid="uid://cscrq51ksakk" path="res://Scenes/Actors/connection_tester.tscn" id="4_im31i"]
+[ext_resource type="Texture2D" uid="uid://v17eqsbsyi82" path="res://Graphics/upgrade_button.png" id="5_63jcu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgosc"]
 radius = 64.195
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7k7m6"]
+cull_mode = 2
+polygon = PackedVector2Array(0, -64, 21, -61, 40, -51, 53, -36, 63, -14, 63, 12, 57, 29, 50, 39, 40, 50, 28, 58, 15, 63, -15, 63, -27, 58, -41, 49, -50, 41, -58, 29, -64, 8, -64, -12, -58, -29, -50, -41, -42, -49, -24, -60)
 
 [node name="Station" type="StaticBody2D"]
 collision_mask = 7
@@ -45,12 +50,56 @@ vertical_alignment = 1
 
 [node name="Timers" type="Node" parent="."]
 
+[node name="Atk_timers" type="Node" parent="Timers"]
+
 [node name="TransferTimer" type="Timer" parent="Timers"]
 
 [node name="AccrueUnitsTimer" type="Timer" parent="Timers"]
 
 [node name="connection_tester" parent="." instance=ExtResource("4_im31i")]
 
+[node name="upgrade" type="Node2D" parent="."]
+
+[node name="Upgrade_lvl1" type="TextureButton" parent="upgrade"]
+visible = false
+offset_left = -43.0
+offset_top = 21.0
+offset_right = -21.0
+offset_bottom = 43.0
+texture_normal = ExtResource("5_63jcu")
+
+[node name="Upgrade_lvl2" type="TextureButton" parent="upgrade"]
+visible = false
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 43.0
+offset_bottom = 43.0
+texture_normal = ExtResource("5_63jcu")
+
+[node name="Upgrade_lvl3" type="TextureButton" parent="upgrade"]
+visible = false
+offset_left = 21.0
+offset_top = -43.0
+offset_right = 43.0
+offset_bottom = -21.0
+texture_normal = ExtResource("5_63jcu")
+
+[node name="Upgrade_lvl4" type="TextureButton" parent="upgrade"]
+visible = false
+offset_left = -43.0
+offset_top = -43.0
+offset_right = -21.0
+offset_bottom = -21.0
+texture_normal = ExtResource("5_63jcu")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+z_index = 5
+occluder = SubResource("OccluderPolygon2D_7k7m6")
+
 [connection signal="gui_input" from="TeamColor" to="." method="_on_team_color_gui_input"]
 [connection signal="timeout" from="Timers/TransferTimer" to="." method="_on_transfer_timer_timeout"]
 [connection signal="timeout" from="Timers/AccrueUnitsTimer" to="." method="_on_accrue_units_timer_timeout"]
+[connection signal="pressed" from="upgrade/Upgrade_lvl1" to="." method="_upgrade_event"]
+[connection signal="pressed" from="upgrade/Upgrade_lvl2" to="." method="_upgrade_event"]
+[connection signal="pressed" from="upgrade/Upgrade_lvl3" to="." method="_upgrade_event"]
+[connection signal="pressed" from="upgrade/Upgrade_lvl4" to="." method="_upgrade_event"]

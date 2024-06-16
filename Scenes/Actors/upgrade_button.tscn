@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3xjm1ba8lfdu"]
+
+[ext_resource type="Texture2D" uid="uid://v17eqsbsyi82" path="res://Graphics/upgrade_button.png" id="1_e0tyk"]
+
+[node name="Upgrade_button" type="TextureButton"]
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 11.0
+offset_bottom = 11.0
+texture_normal = ExtResource("1_e0tyk")

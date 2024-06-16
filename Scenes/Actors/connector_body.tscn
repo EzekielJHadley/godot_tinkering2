@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dh8oeausc1w45"]
+[gd_scene load_steps=10 format=3 uid="uid://dh8oeausc1w45"]
 
 [ext_resource type="Texture2D" uid="uid://cm0qbbr3f70pm" path="res://Graphics/pattern.bmp" id="1_72laf"]
 [ext_resource type="Shader" path="res://Scenes/Actors/connector_body.gdshader" id="1_c8ljj"]
@@ -13,6 +13,10 @@ shader_parameter/team_color = Color(1, 0, 0, 1)
 shader_parameter/contested_color = Color(0, 0, 1, 1)
 shader_parameter/percent_fill = 0.5
 shader_parameter/conn_length = 512.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_vff8m"]
+cull_mode = 1
+polygon = PackedVector2Array(0, -32, 511, -32, 512, 31, -1, 32)
 
 [sub_resource type="Curve2D" id="Curve2D_qu3je"]
 resource_local_to_scene = true
@@ -51,6 +55,9 @@ texture = ExtResource("1_72laf")
 polygon = PackedVector2Array(0, -32, 512, -32, 512, 32, 0, 32)
 uv = PackedVector2Array(0, 20, 512, 20, 512, 84, 0, 84)
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_vff8m")
+
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_qu3je")
 
@@ -59,10 +66,10 @@ curve = SubResource("Curve2D_qu3je")
 [node name="PointLight2D" type="PointLight2D" parent="Path2D/PathFollow2D"]
 visible = false
 color = Color(1, 0, 0, 1)
-energy = 7.96
+energy = 3.0
 shadow_enabled = true
 texture = ExtResource("4_fhdda")
-texture_scale = 0.25
+texture_scale = 0.4
 
 [node name="ParticleOffset" type="Node2D" parent="."]
 position = Vector2(512, 0)

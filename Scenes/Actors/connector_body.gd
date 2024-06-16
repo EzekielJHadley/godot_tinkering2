@@ -19,7 +19,7 @@ func set_team(team: Globals.team_choices, team_color: Color):
 
 func _ready():
 	set_team(from_station.team, from_station.team_color)
-	from_station.transfer_units.connect(recieve_units)
+	#from_station.transfer_units.connect(recieve_units)
 	add_collision_exception_with(from_station)
 
 func _process(_delta):
@@ -35,6 +35,8 @@ func _process(_delta):
 				connect_stations(collision)
 		
 	
+func _exit_tree():
+	from_station.detach_timer(self)
 
 func connect_stations(target: Station):
 	#print("connecting to station!")
@@ -63,8 +65,10 @@ func connect_stations(target: Station):
 		connected = true
 		set_light_path_endpoint(distance)
 		connection_made.emit(self)
+		from_station.attach_new_timer(self)
 		#emit smoke to show connection
 		$ParticleOffset/GPUParticles2D.emitting = true
+		#from_station.start_transfer_timer()
 	#either way we aren't in the process of connecting
 	is_connecting = false
 
@@ -108,11 +112,13 @@ func set_uncontested():
 func recieve_units(rec_station: Station):
 	if connected and not contested:
 		var units_in_transit = from_station.units_from_station()
-		var ret = to_station.units_to_station(from_station.team, units_in_transit)
-		if ret > 0:
-			#send it back
-			from_station.units_to_station(from_station.team, ret)
-		move_light()
+		#if there are no units to transfer, don't do anything
+		if units_in_transit > 0:
+			var ret = to_station.units_to_station(from_station.team, units_in_transit)
+			if ret > 0:
+				#send it back
+				from_station.units_to_station(from_station.team, ret)
+			move_light()
 	elif connected and contested:
 		if contested_storage["units"] > 0:
 			if contested_storage["rec_station"] == rec_station:
@@ -124,7 +130,7 @@ func recieve_units(rec_station: Station):
 					print("Contest winner is: ", contested_storage["rec_station"])
 					rec_station.units_to_station(contested_storage["rec_station"].team, abs(diff))
 					move_light(rec_station.team == base_team)
-				else:
+				elif diff < 0:
 					#then the stored station lost this contest
 					print("Contest winner is: ", rec_station)
 					contested_storage["rec_station"].units_to_station(rec_station.team, abs(diff))
@@ -157,7 +163,7 @@ func move_light(reverse: bool = false):
 	$Path2D/PathFollow2D/PointLight2D.visible = true
 	$Path2D/PathFollow2D.progress_ratio = start
 	var tween = create_tween()
-	tween.tween_property($Path2D/PathFollow2D, "progress_ratio", end, from_station.transfer_time - 0.2)
+	tween.tween_property($Path2D/PathFollow2D, "progress_ratio", end, from_station.transfer_time - 0.05)
 	tween.finished.connect($Path2D/PathFollow2D/PointLight2D.hide)
 	
 
@@ -188,6 +194,9 @@ func change_length(rect_len: float):
 	#the the end popint of the collision shape
 	$CollisionPolygon2D.polygon[1].x = rect_len
 	$CollisionPolygon2D.polygon[2].x = rect_len
+	#the end of the light occluder2d
+	$LightOccluder2D.occluder.polygon[1].x = rect_len
+	$LightOccluder2D.occluder.polygon[2].x = rect_len
 	#update the shader so it knows where the halfway point is
 	$Polygon2D.material.set_shader_parameter("conn_length", rect_len)
 	#the particl offset needs to be moved as well
@@ -212,5 +221,6 @@ func set_light_path_endpoint(distance: float):
 
 func _on_input_event(_viewport, event, _shape_idx):
 		if event is InputEventMouseButton and event.is_pressed():
+			print("pressed")
 			if base_team == Globals.team_choices.PLAYER:
 				queue_free()
