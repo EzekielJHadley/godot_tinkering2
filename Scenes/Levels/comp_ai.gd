@@ -273,7 +273,7 @@ class COMPUTER:
 		var max_loops: int = self.distances.max()
 		for i in range(max_loops):
 			var station_index = self.distances.find(i)
-			var station_node = all_stations[station_index]
+			var station_node:Station = all_stations[station_index]
 			if station_node.team == self.team and station_node.upgrade_station():
 				print("upgraded AI station")
 				break

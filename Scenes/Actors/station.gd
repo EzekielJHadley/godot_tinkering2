@@ -9,7 +9,7 @@ const MAX_LEVEL:int = 4
 @export_range(0, MAX_LEVEL) var level: int = 0:
 	set(value):
 		level = min(value, MAX_LEVEL)
-var level_cost:float = 5
+var level_cost:float
 
 #define the state of units and generation
 var max_units: int = 10
@@ -31,28 +31,24 @@ var transfer_time: float = 1:
 		transfer_time = value
 		for timer in $Timers/Atk_timers.get_children():
 			timer.wait_time = transfer_time
-		$Timers/TransferTimer.wait_time = transfer_time
 var transfer_stack: Array[Connector] = []
 
 signal start_connector(station)
-signal transfer_units(station)
 signal owner_changed(station, from)
 
 func _ready():
 	update_team(team)
 	set_level()
 	units = starting_units
-	#$Timers/TransferTimer.start()
 	$Timers/AccrueUnitsTimer.start()
 
 func _process(_delta):
-	if transfer_stack.has(null):
-		pass
 	while transfer_stack.size() > 0 and units > transfer_strength:
 		var conn: Connector = transfer_stack.pop_front()
-		conn.recieve_units(self)
-		print("Timers/Atk_timers/" + conn.name.validate_node_name() + "_timer")
-		get_node("Timers/Atk_timers/" + conn.name.validate_node_name() + "_timer").start()
+		if conn != null:
+			conn.recieve_units(self)
+			#print("Timers/Atk_timers/" + conn.name.validate_node_name() + "_timer")
+			get_node("Timers/Atk_timers/" + conn.name.validate_node_name() + "_timer").start()
 		
 
 func set_level():
@@ -172,9 +168,6 @@ func _on_team_color_gui_input(event):
 			start_connector.emit(self)
 			#event.canceled = true
 
-func start_transfer_timer():
-	$Timers/TransferTimer.start()
-	
 func attach_new_timer(new_connector: Connector):
 	var new_timer = Timer.new()
 	new_timer.wait_time = transfer_time
@@ -187,15 +180,11 @@ func attach_new_timer(new_connector: Connector):
 	
 func detach_timer(dead_conn: Connector):
 	transfer_stack.erase(dead_conn)
-	get_node("Timers/Atk_timers/"+dead_conn.name.validate_node_name()+"_timer").queue_free()
+	var atk_timer = get_node("Timers/Atk_timers/"+dead_conn.name.validate_node_name()+"_timer")
+	if atk_timer:
+		atk_timer.queue_free()
 	
 
-
-func _on_transfer_timer_timeout():
-	#await a function that, when units are available, send signal
-	#then start timer again
-	#transfer_units.emit(self)
-	pass
 
 func _on_accrue_units_timer_timeout():
 	if team != Globals.team_choices.NONE:

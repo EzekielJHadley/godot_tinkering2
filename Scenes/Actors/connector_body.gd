@@ -8,6 +8,7 @@ var to_station: Station
 
 var base_team: Globals.team_choices
 var contested: bool = false
+var contested_team: Globals.team_choices
 var contested_storage = {"rec_station":null, "units":0}
 
 signal connection_made(connector)
@@ -19,7 +20,6 @@ func set_team(team: Globals.team_choices, team_color: Color):
 
 func _ready():
 	set_team(from_station.team, from_station.team_color)
-	#from_station.transfer_units.connect(recieve_units)
 	add_collision_exception_with(from_station)
 
 func _process(_delta):
@@ -68,7 +68,6 @@ func connect_stations(target: Station):
 		from_station.attach_new_timer(self)
 		#emit smoke to show connection
 		$ParticleOffset/GPUParticles2D.emitting = true
-		#from_station.start_transfer_timer()
 	#either way we aren't in the process of connecting
 	is_connecting = false
 
@@ -79,16 +78,18 @@ func tween_test(target_pos: Vector2, collision_container: Array):
 	collision_container.append(rotate_and_colide(target_pos))
 	
 func reverse_connection():
-	if from_station.transfer_units.is_connected(recieve_units):
-			from_station.transfer_units.disconnect(recieve_units)
+	#need to remove timer from former sedning Station
+	from_station.detach_timer(self)
+	#swap to and from stations
 	var station_swap = from_station
 	from_station = to_station
 	to_station = station_swap
+	#attach timer to the new from station
+	from_station.attach_new_timer(self)
 	#flip this connector around
 	position = from_station.global_position
 	rotate(PI)
 	#change the signal listener
-	from_station.transfer_units.connect(recieve_units)
 	
 func set_contested():
 	print("This connection is now contested")
@@ -98,15 +99,19 @@ func set_contested():
 		reverse_connection()
 	else:
 		contested = true
+		contested_team = to_station.team
+		#set contested team color of connector
 		$Polygon2D.material.set_shader_parameter("percent_fill", 0.5)
 		$Polygon2D.material.set_shader_parameter("contested_color", to_station.team_color)
-		to_station.transfer_units.connect(recieve_units)
+		#let the contested station send units
+		to_station.attach_new_timer(self)
 
 func set_uncontested():
 	contested = false
-	if to_station.transfer_units.is_connected(recieve_units):
-		to_station.transfer_units.disconnect(recieve_units)
+	#set the colors to be only for the From Team
 	set_team(from_station.team, from_station.team_color)
+	#detach any timers on the To Team
+	to_station.detach_timer(self)
 	
 
 func recieve_units(rec_station: Station):
@@ -120,6 +125,8 @@ func recieve_units(rec_station: Station):
 				from_station.units_to_station(from_station.team, ret)
 			move_light()
 	elif connected and contested:
+		#both stations need to attempt to transfer units
+		#which ever station "wins", has a net positive, send difference twords the other station
 		if contested_storage["units"] > 0:
 			if contested_storage["rec_station"] == rec_station:
 				contested_storage["units"] += rec_station.units_from_station()
@@ -224,3 +231,5 @@ func _on_input_event(_viewport, event, _shape_idx):
 			print("pressed")
 			if base_team == Globals.team_choices.PLAYER:
 				queue_free()
+			elif contested_team == Globals.team_choices.PLAYER:
+				set_uncontested()

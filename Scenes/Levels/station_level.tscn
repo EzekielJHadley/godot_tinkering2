@@ -26,7 +26,6 @@ position = Vector2(702, 520)
 team = 1
 start = true
 my_name = "Two"
-starting_units = 30
 
 [node name="Station1" parent="Stations" instance=ExtResource("1_jre65")]
 position = Vector2(569, 204)

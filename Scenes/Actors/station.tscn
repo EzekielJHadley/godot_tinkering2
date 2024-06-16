@@ -52,8 +52,6 @@ vertical_alignment = 1
 
 [node name="Atk_timers" type="Node" parent="Timers"]
 
-[node name="TransferTimer" type="Timer" parent="Timers"]
-
 [node name="AccrueUnitsTimer" type="Timer" parent="Timers"]
 
 [node name="connection_tester" parent="." instance=ExtResource("4_im31i")]
@@ -97,7 +95,6 @@ z_index = 5
 occluder = SubResource("OccluderPolygon2D_7k7m6")
 
 [connection signal="gui_input" from="TeamColor" to="." method="_on_team_color_gui_input"]
-[connection signal="timeout" from="Timers/TransferTimer" to="." method="_on_transfer_timer_timeout"]
 [connection signal="timeout" from="Timers/AccrueUnitsTimer" to="." method="_on_accrue_units_timer_timeout"]
 [connection signal="pressed" from="upgrade/Upgrade_lvl1" to="." method="_upgrade_event"]
 [connection signal="pressed" from="upgrade/Upgrade_lvl2" to="." method="_upgrade_event"]
